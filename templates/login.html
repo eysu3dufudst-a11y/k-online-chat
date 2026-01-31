@@ -1,28 +1,20 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>K 온라인 채팅방 - 로그인</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<meta charset="UTF-8">
+<title>K 온라인 채팅방</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
 <div class="form-container">
-    <h2>K 온라인 채팅방</h2>
-    <h3>로그인</h3>
-
-    {% if error %}
-    <p style="color:red;">{{ error }}</p>
-    {% endif %}
-
-    <form method="POST">
-        <input type="text" name="username" placeholder="아이디" required>
-        <input type="password" name="password" placeholder="비밀번호" required>
-        <button type="submit">로그인</button>
-    </form>
-
-    <p>계정이 없나요? <a href="/register">회원가입</a></p>
+  <h1>K 온라인 채팅방</h1>
+  <form method="POST">
+    <input type="text" name="username" placeholder="사용자 이름" required>
+    <input type="password" name="password" placeholder="비밀번호" required>
+    <button type="submit">로그인</button>
+  </form>
+  <p>계정이 없나요? <a href="{{ url_for('register') }}">회원가입</a></p>
+  {% if error %}<p class="error">{{ error }}</p>{% endif %}
 </div>
-
 </body>
 </html>
