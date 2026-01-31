@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>K 온라인 채팅방 - 로비</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="form-container">
+    <h2>K 온라인 채팅방</h2>
+    <h3>로비</h3>
+
+    <!-- 방 목록 -->
+    <ul id="room-list" class="room-list">
+        {% for room in rooms %}
+        <li><a href="{{ url_for('chat', room=room) }}">{{ room }}</a></li>
+        {% endfor %}
+    </ul>
+
+    <!-- 새 방 추가 -->
+    <form id="new-room-form">
+        <input type="text" id="new-room" placeholder="새 채팅방 이름" required>
+        <button type="submit">방 추가</button>
+    </form>
+
+    <p style="text-align:center; margin-top:15px;">
+        <a href="/logout">로그아웃</a>
+    </p>
+</div>
+
+<script>
+const form = document.getElementById("new-room-form");
+const roomList = document.getElementById("room-list");
+
+form.addEventListener("submit", function(e){
+    e.preventDefault();
+    const roomName = document.getElementById("new-room").value.trim();
+    if(roomName === "") return;
+
+    fetch("/add_room", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({ room: roomName })
+    }).then(res => {
+        if(res.ok){
+            const li = document.createElement("li");
+            const a = document.createElement("a");
+            a.href = `/chat/${roomName}`;
+            a.textContent = roomName;
+            li.appendChild(a);
+            roomList.appendChild(li);
+            document.getElementById("new-room").value = "";
+        } else {
+            alert("방 추가 실패!");
+        }
+    });
+});
+</script>
+
+</body>
+</html>

@@ -1,0 +1,140 @@
+/* 전체 화면 중앙 정렬 카드 */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #f2f2f2;
+    font-family: Arial, sans-serif;
+}
+
+.form-container {
+    background: white;
+    padding: 30px;
+    width: 360px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* 공통 제목 */
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 입력창 */
+input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+/* 버튼 */
+button {
+    padding: 10px;
+    width: 100%;
+    background: #4a69bd;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #1e3799;
+}
+
+/* 링크 */
+a {
+    text-decoration: none;
+    color: #4a69bd;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* 채팅방 메시지 */
+.chat-messages {
+    list-style: none;
+    padding: 10px;
+    height: 300px;
+    overflow-y: auto;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+    background: #fafafa;
+}
+
+.chat-input {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
+
+.chat-input input[type="text"] {
+    flex: 1;
+}
+
+.chat-bubble {
+    max-width: 70%;
+    margin: 5px;
+    padding: 10px;
+    border-radius: 15px;
+    word-wrap: break-word;
+}
+
+.chat-bubble.left {
+    background: #dfe6e9;
+    align-self: flex-start;
+}
+
+.chat-bubble.right {
+    background: #4a69bd;
+    color: white;
+    align-self: flex-end;
+}
+
+.chat-bubble img {
+    border-radius: 10px;
+    margin-top: 5px;
+}
+
+/* 로비 방 목록 */
+.room-list {
+    list-style: none;
+    padding: 0;
+    margin-bottom: 20px;
+    width: 100%;
+}
+
+.room-list li {
+    margin: 8px 0;
+}
+
+.room-list a {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #dfe6e9;
+    text-align: center;
+    border-radius: 5px;
+    color: black;
+}
+
+.room-list a:hover {
+    background: #b2bec3;
+}
+
+#new-room-form {
+    display: flex;
+    gap: 10px;
+    width: 100%;
+}
