@@ -1,97 +1,39 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <title>{{ room }} 채팅방</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.2/socket.io.min.js"></script>
+<meta charset="UTF-8">
+<title>K 온라인 채팅방 - {{ room }}</title>
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<script src="https://cdn.socket.io/4.7.1/socket.io.min.js"></script>
 </head>
 <body>
-
 <div class="form-container">
-    <h2>{{ room }} 채팅방</h2>
-
-    <!-- 메시지 리스트 -->
-    <ul id="messages" class="chat-messages"></ul>
-
-    <!-- 메시지 입력 + 파일 -->
-    <div class="chat-input">
-        <input id="msg" placeholder="메시지를 입력하세요..." autocomplete="off">
-        <input type="file" id="fileInput">
-        <button onclick="sendMsg()">전송</button>
-    </div>
-
-    <p style="text-align:center; margin-top:10px;">
-        <a href="/lobby">로비로 돌아가기</a> |
-        <a href="/logout">로그아웃</a>
-    </p>
+  <h1>K 온라인 채팅방</h1>
+  <h2>{{ room }}</h2>
+  <div id="chat" style="height:300px;overflow:auto;border:1px solid #ccc;padding:5px;margin-bottom:5px;"></div>
+  <input id="message" type="text" placeholder="메시지 입력">
+  <button onclick="sendMessage()">보내기</button>
 </div>
 
 <script>
-const socket = io();
-const username = "{{ username }}";
-const room = "{{ room }}";
+var socket = io();
+var username = "{{ username }}";
+var room = "{{ room }}";
 
-// 입장 이벤트
-socket.emit("join", {username, room});
+socket.emit("join", {username: username, room: room});
 
-// 메시지 수신
-socket.on("message", function(data){
-    const messages = document.getElementById("messages");
-    const li = document.createElement("li");
-    li.classList.add("chat-bubble");
-    li.classList.add(data.username === username ? "right" : "left");
-
-    if(data.msg) li.textContent = `${data.username}: ${data.msg}`;
-
-    if(data.file){
-        const file = data.file;
-        if(file.data.match(/\.(png|jpg|jpeg|gif)$/i)){
-            const img = document.createElement("img");
-            img.src = file.data;
-            img.style.maxWidth = "200px";
-            li.appendChild(document.createElement("br"));
-            li.appendChild(img);
-        } else {
-            const a = document.createElement("a");
-            a.href = file.data;
-            a.textContent = file.name;
-            a.target = "_blank";
-            li.appendChild(document.createElement("br"));
-            li.appendChild(a);
-        }
-    }
-
-    messages.appendChild(li);
-    messages.scrollTop = messages.scrollHeight;
-});
-
-// 메시지 전송
-function sendMsg(){
-    const msgInput = document.getElementById("msg");
-    const fileInput = document.getElementById("fileInput");
-    const file = fileInput.files[0];
-
-    if(file){
-        const reader = new FileReader();
-        reader.onload = function(e){
-            socket.emit("message", {
-                username,
-                room,
-                msg: msgInput.value,
-                file: {name: file.name, data: e.target.result}
-            });
-            msgInput.value = "";
-            fileInput.value = "";
-        }
-        reader.readAsDataURL(file);
-    } else {
-        if(msgInput.value.trim() === "") return;
-        socket.emit("message", {username, room, msg: msgInput.value});
-        msgInput.value = "";
-    }
+function sendMessage(){
+  var msg = document.getElementById("message").value;
+  if(msg.trim()=="") return;
+  socket.emit("send_message", {username: username, room: room, msg: msg});
+  document.getElementById("message").value="";
 }
-</script>
 
+socket.on("message", function(data){
+  var chat = document.getElementById("chat");
+  chat.innerHTML += "<p><b>"+data.username+":</b> "+data.msg+"</p>";
+  chat.scrollTop = chat.scrollHeight;
+});
+</script>
 </body>
 </html>
